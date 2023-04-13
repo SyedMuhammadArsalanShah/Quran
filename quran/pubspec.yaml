@@ -29,12 +29,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  audioplayers: ^0.20.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http: ^0.13.5
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -90,4 +92,7 @@ flutter:
     - family: alq
       fonts:
         - asset: fonts/alquran.ttf  
- 
+    
+    - family: alq1
+      fonts:
+        - asset: fonts/alquran1.ttf  

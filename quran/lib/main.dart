@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quran/Surahs.dart';
 import 'package:quran/home.dart';
 import 'package:quran/quranlist.dart';
 
 import 'About.dart';
+import 'audio.dart';
 
 void main() {
   runApp(const MyApp());
