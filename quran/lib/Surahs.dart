@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:quran/surahindex.dart';
+import 'surahindex.dart';
 
 Map mapResponse = {};
 Map dataResponse = {};
@@ -28,8 +28,9 @@ class _SurahsState extends State<Surahs> {
       setState(() {
         mapResponse = jsonDecode(response.body);
         dataResponse = mapResponse['data'];
-        listResponse = dataResponse['surahs'][widget.name.numm - 1]['ayahs'];
-        listResponse1 = dataResponse['surahs'];
+        int indexofsurah = widget.name.numm - 1;
+        listResponse = dataResponse['surahs'][indexofsurah]['ayahs'];
+           print("WA910=>$listResponse");
       });
     }
   }
@@ -46,13 +47,20 @@ class _SurahsState extends State<Surahs> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Surah ${widget.name.namee}",
-              style: TextStyle(fontFamily: 'alq', color: Colors.white)),
+              style: const TextStyle(fontFamily: 'alq', color: Colors.white)),
           backgroundColor: Colors.teal,
         ),
         body: Column(
           children: [
             Center(
               child: Card(
+                elevation: 8,
+                color: Colors.teal,
+                shadowColor: Colors.green,
+                margin: const EdgeInsets.all(10),
+                shape: BeveledRectangleBorder(
+                  borderRadius: BorderRadius.circular(2),
+                ),
                 child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.white,
@@ -61,20 +69,19 @@ class _SurahsState extends State<Surahs> {
                         style: TextStyle(color: Colors.teal),
                       ),
                     ),
-                    subtitle: Row(
+                    subtitle: Column(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Surah ${widget.name.namee} : ",
+                        Text("Surah ${widget.name.namee} ",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontFamily: 'alq',
                                 fontSize: 15,
                                 color: Colors.white)),
-                        Text(
-                            listResponse1[widget.name.numm - 1]
-                                ['englishNameTranslation'],
+                        Text(widget.name.englishNameTranslation,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontFamily: 'alq', color: Colors.white)),
                       ],
                     ),
@@ -82,57 +89,68 @@ class _SurahsState extends State<Surahs> {
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                         style:
-                            TextStyle(fontFamily: 'alq', color: Colors.white)),
+                            const TextStyle(fontFamily: 'alq', color: Colors.white)),
                     trailing: Column(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        listResponse1[widget.name.numm - 1]['revelationType'] ==
-                                'Meccan'
+                        widget.name.revelationType == 'Meccan'
                             ? Image.asset('images/kaaba.png',
-                                width: 30, height: 30)
+                                width: 20, height: 30)
                             : Image.asset('images/madina.png',
-                                width: 30, height: 30),
+                                width: 20, height: 30),
                         Text(
                           "verses ${widget.name.nummv}",
                           style: TextStyle(fontSize: 10, color: Colors.white),
                         ),
                       ],
                     )),
-                elevation: 8,
-                color: Colors.teal,
-                shadowColor: Colors.green,
-                margin: EdgeInsets.all(10),
-                shape: BeveledRectangleBorder(
-                  borderRadius: BorderRadius.circular(2),
-                ),
               ),
             ),
-            Expanded(
+            
+            
+            listResponse.isNotEmpty
+            ? Expanded(
                 child: ListView.builder(
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    // onTap: () {},
+                // ignore: unnecessary_null_comparison
+                if (listResponse != null) {
+                  return Card(
+                    margin: const EdgeInsets.all(10),
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white)),
+                    child: ListTile(
+                      // onTap: () {},
 
-                    title: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        listResponse[index]['text'],
-                        textDirection: TextDirection.rtl,
-                        style:
-                            TextStyle(fontFamily: 'alq', color: Colors.black),
+                      title: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Text(
+                          listResponse[index]['text'],
+                          textDirection: TextDirection.rtl,
+                          style:
+                              const TextStyle(fontFamily: 'alq', color: Colors.black),
+                        ),
                       ),
                     ),
-                  ),
-                  margin: const EdgeInsets.all(10),
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.white)),
-                );
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
               },
-              itemCount: listResponse == null ? 0 : listResponse.length,
-            ))
+              itemCount:  listResponse.length,
+            )):
+            Center(
+                child: LinearProgressIndicator(),
+              )
           ],
-        ));
+        )
+        
+        
+        
+        
+        );
   }
 }
