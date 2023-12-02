@@ -28,7 +28,7 @@ class _QuranlistState extends State<Quranlist> {
         mapResponse = jsonDecode(response.body);
         dataResponse = mapResponse['data']['surahs'];
         listResponse = dataResponse['references'];
-         print("SMAS=>$listResponse");
+        print("SMAS=>$listResponse");
       });
     }
   }
@@ -43,10 +43,6 @@ class _QuranlistState extends State<Quranlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("HolyQuran"),
-          backgroundColor: Colors.teal,
-        ),
         body: listResponse.isNotEmpty
             ? ListView.builder(
                 itemBuilder: (context, index) {
@@ -73,7 +69,7 @@ class _QuranlistState extends State<Quranlist> {
                         );
                       },
                       leading: CircleAvatar(
-                        backgroundColor: Colors.teal,
+                        backgroundColor: Color(0XFF262626),
                         child: Text(
                           listResponse[index]["number"].toString(),
                           style: TextStyle(color: Colors.white),
